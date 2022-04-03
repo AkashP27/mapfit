@@ -81,11 +81,11 @@ class App {
   constructor() {
     this._getPosition();
 
+    this._getLocalStorage();
+
     form.addEventListener('submit', this._newWorkout.bind(this));
     inputType.addEventListener('change', this._toggleElevationField);
     containerWorkouts.addEventListener('click', this._moveToPopup.bind(this));
-
-    this._getLocalStorage();
   }
 
   _getPosition() {
@@ -102,7 +102,7 @@ class App {
     const { latitude } = position.coords;
     const { longitude } = position.coords;
 
-    console.log(`https://www.google.co.in/maps/@${latitude},${longitude}`);
+    // console.log(`https://www.google.co.in/maps/@${latitude},${longitude}`);
     const coords = [latitude, longitude];
 
     this.#map = L.map('map').setView(coords, this.#mapZoomLevel);
@@ -278,6 +278,8 @@ class App {
   }
 
   _moveToPopup(e) {
+    if (!this.#map) return;
+
     const workoutElement = e.target.closest('.workout');
 
     if (!workoutElement) return;
